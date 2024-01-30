@@ -30,8 +30,8 @@
     ]
   },
   "repository": {
-    "type": "Github",
-    "url": "https://github.com/adarshpv9746/playwright-cucumber-Latest.git"
+    "type": "GitLab",
+    "url": "https://code.qburst.com/playwright-test-automation-framework/js_playwright_framework"
   },
   "keywords": [],
   "author": "adarshvijayan@qburst.com",
