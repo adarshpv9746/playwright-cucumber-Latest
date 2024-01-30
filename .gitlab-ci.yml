@@ -1,0 +1,41 @@
+stages:
+  - build
+  - test
+  - deploy
+
+Build docker image: 
+  stage: build
+  tags:
+    - QBC-internal
+  before_script:
+    - echo "building docker image..."
+  script:
+    - docker build --build-arg SECRET_KEY=$SECRET_KEY -t adarshpv9746/playwright-qb .
+    - echo "tagging the docker --version"
+    - docker tag adarshpv9746/playwright-qb  adarshpv9746/playwright-qb:v1
+  after_script:
+    - echo "Docker image built."
+
+Run docker image:
+  stage: test  
+  tags:
+    - QBC-internal
+  before_script:
+    - echo "running docker image"
+  script:
+    - docker run -e ENV=tst -e BROWSER=firefox -e REPORT=cucumber adarshpv9746/playwright-qb:v1
+  after_script:
+    - echo "docker image execution complete."
+
+Publish to docker hub:      
+  stage: deploy 
+  tags:
+    - QBC-internal
+  environment: docker
+  before_script:
+    - echo "Publishing the docker image" 
+  script:
+    - docker login --username adarshpv9746 --password enter_docker_token_here
+    - docker push adarshpv9746/playwright-qb:v1
+  after_script:
+    - echo "Image successfully published."
